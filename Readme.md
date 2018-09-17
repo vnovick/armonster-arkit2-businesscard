@@ -4,7 +4,7 @@
 
 
 
-- clone the repo
+- Clone the repo
 
 - Go to this link and install Xcode 10 Beta: <https://developer.apple.com/xcode/downloads/>
 
@@ -28,4 +28,14 @@
   pod install
   ```
 
-- 
+- #### Update RCTWebSocket Project
+
+  RCTWebSocket Target -> Build Phases -> Link Binary With Libraries and replace the unresolved `libfishhook.a` with the correct one under RCTWebSocket.xcodeproj -> Products
+
+  from: <https://github.com/facebook/react-native/issues/19569>
+
+- #### TroubleShooting
+
+  if you have config.h build error - 
+
+  `cd ./node_modules/react-native/third-party/glog-0.3.4 && ../../scripts/ios-configure-glog.sh` (based on https://github.com/facebook/react-native/issues/19774)
