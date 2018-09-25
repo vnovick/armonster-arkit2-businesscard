@@ -9,10 +9,15 @@ import {
   ViroBox,
   ViroConstants,
   ViroARTrackingTargets,
+  ViroMaterials,
+  ViroText,
+  ViroImage,
+  ViroFlexView,
   ViroARImageMarker,
   ViroAmbientLight,
   ViroARPlane,
-  ViroDirectionalLight,
+  ViroAnimatedImage,
+  ViroAnimations,
   ViroNode,
   Viro3DObject,
   ViroQuad
@@ -22,7 +27,8 @@ export class HelloWorldSceneAR extends Component {
 
   state = {
     isTracking: false,
-    initialized: false
+    initialized: false,
+    runAnimation: false
   }
 
   getNoTrackingUI(){
@@ -34,42 +40,69 @@ export class HelloWorldSceneAR extends Component {
       }/>
     )
   }
+  
 
 
   getARScene() {
     return (
-      <ViroARImageMarker target={"businessCard"} >
-          <ViroNode key="monster">
-              <ViroDirectionalLight color="#777777"
-                direction={[0, -1, 0]}
-                shadowOrthographicPosition={[0, 8, -5]}
-                shadowOrthographicSize={10}
-                shadowNearZ={2}
-                shadowFarZ={9}
-                lightInfluenceBitMask={2}
-                castsShadow={true} 
-              />
-              <Viro3DObject
-                source={require('./res/monster.vrx')}
-                resources={[
-                  require('./res/Mutant_diffuse.png'),
-                  require('./res/Mutant_normal.png')
-                ]}
-                scale={[0.0002, 0.0002, 0.0002 ]}
-                type="VRX"
-                animation={{name:'mixamo.com',
-                  run:true,
-                  loop:true
-                }}
-              />
-              <ViroQuad
-                position={[0,0,0]}
+      <ViroARImageMarker target={"businessCard"} onAnchorFound={() => this.setState({
+        runAnimation: true
+      })}>
+          <ViroNode key="card">
+            <ViroNode opacity={0} position={[0, -0.02, 0]} animation={{name:'animateImage', run: this.state.runAnimation }}>
+              <ViroFlexView 
+                  rotation={[-90, 0, 0]}
+                  height={0.03} 
+                  width={0.05}
+                  style={{flexDirection: 'column' }} 
+              >
+                <ViroFlexView 
+                  style={{flexDirection: 'row', alignItems: 'flex-start', padding: 0.001, flex: .5}} 
+                >
+                  <ViroImage
+                    height={0.015}
+                    width={0.015}
+                    style={styles.image}
+                    source={require('./res/avatar.png')}
+                  />
+                  <ViroText 
+                    textClipMode="None"
+                    text="Vladimir Novick" 
+                    scale={[.015, .015, .015]}
+                    style={styles.textStyle}
+                  />
+                </ViroFlexView>
+                <ViroFlexView 
+                  onTouch={() => alert("twitter")}
+                  style={{flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', flex: .5}} 
+                >
+                  <ViroText 
+                    width={0.01}
+                    height={0.01}
+                    textAlign="left"
+                    textClipMode="None"
+                    text="@VladimirNovick" 
+                    scale={[.01, .01, .01]}
+                    style={styles.textStyle}
+                  />
+                  <ViroAnimatedImage
+                    height={0.01}
+                    width={0.01}
+                    loop={true}
+                    placeholderSource={require("./res/local_spinner.jpg")}
+                    source={require('./res/tweet.gif')}
+                  />
+                </ViroFlexView>
+              </ViroFlexView>
+            </ViroNode>  
+            <ViroNode opacity={0} position={[0, 0, 0]} animation={{name:'animateViro', run: this.state.runAnimation }}>
+              <ViroText text="www.viromedia.com"
                 rotation={[-90, 0, 0]}
-                height={2} 
-                width={2}
-                arShadowReceiver={true}
+                scale={[.01, .01, .01]}
+                style={styles.textStyle}
               />
             </ViroNode>
+          </ViroNode>
         </ViroARImageMarker>
     )
   }
@@ -92,13 +125,15 @@ export class HelloWorldSceneAR extends Component {
 }
 
 var styles = StyleSheet.create({
-  helloWorldTextStyle: {
-    fontFamily: 'Arial',
+  textStyle: {
+    flex: .5,
+    fontFamily: 'Roboto',
     fontSize: 30,
     color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',  
-  },
+    textAlignVertical: 'top',
+    textAlign: 'left',
+    fontWeight: 'bold',
+  }
 });
 
 ViroARTrackingTargets.createTargets({
@@ -107,6 +142,34 @@ ViroARTrackingTargets.createTargets({
     orientation : "Up",
     physicalWidth : 0.05 // real world width in meters
   },
+});
+
+ViroMaterials.createMaterials({
+  imagePlaceholder: {
+    diffuseColor: "rgba(255,255,255,1)"
+  },
+  quad: {
+    diffuseColor: "rgba(0,0,0,0.5)"
+  }
+});
+
+ViroAnimations.registerAnimations({
+  animateImage:{
+    properties:{
+      positionX: 0.05,
+      opacity: 1.0
+    },
+      easing:"Bounce", 
+      duration: 500
+  },
+  animateViro: {
+    properties: {
+      positionZ: 0.02,
+      opacity: 1.0,
+    },
+    easing:"Bounce", 
+    duration: 500
+  }
 });
 
 module.exports = HelloWorldSceneAR;

@@ -4270,9 +4270,9 @@ react-transform-hmr@^1.0.4:
     global "^4.3.0"
     react-proxy "^1.1.7"
 
-"react-viro@file:react-viro-2.9.0.tgz":
-  version "2.9.0"
-  resolved "file:react-viro-2.9.0.tgz#a54706f86c5f5d337ccebe8bafa6ac4b45d7698d"
+react-viro@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/react-viro/-/react-viro-2.11.0.tgz#ce5020be36b5c1e5aafd012f3d6777d57962fd03"
   dependencies:
     prop-types "^15.5.10"
 
