@@ -6,6 +6,7 @@ import {StyleSheet} from 'react-native';
 
 import {
   ViroARScene,
+  ViroDirectionalLight,
   ViroBox,
   ViroConstants,
   ViroARTrackingTargets,
@@ -14,6 +15,7 @@ import {
   ViroImage,
   ViroFlexView,
   ViroARImageMarker,
+  ViroARObjectMarker,
   ViroAmbientLight,
   ViroARPlane,
   ViroAnimatedImage,
@@ -45,9 +47,19 @@ export class HelloWorldSceneAR extends Component {
 
   getARScene() {
     return (
-      <ViroARImageMarker target={"businessCard"} onAnchorFound={() => this.setState({
-        runAnimation: true
-      })}>
+      <ViroNode>
+        <ViroDirectionalLight color="#FFF"
+          direction={[0, -1, 0]}
+          shadowOrthographicPosition={[0, 8, -5]}
+          shadowOrthographicSize={10}
+          shadowNearZ={2}
+          shadowFarZ={9}
+          lightInfluenceBitMask={2}
+          castsShadow={true} 
+        />
+        <ViroARImageMarker target={"businessCard"} onAnchorFound={() => this.setState({
+                runAnimation: true
+              })}>
           <ViroNode key="card">
             <ViroNode opacity={0} position={[0, -0.02, 0]} animation={{name:'animateImage', run: this.state.runAnimation }}>
               <ViroFlexView 
@@ -104,6 +116,10 @@ export class HelloWorldSceneAR extends Component {
             </ViroNode>
           </ViroNode>
         </ViroARImageMarker>
+        <ViroARObjectMarker target={"peanutbutter"} onAnchorFound={() => alert("Found anchor")}>
+          <ViroBox scale={[0.1,0.1, 0.1]} materials={["box"]} />
+        </ViroARObjectMarker>
+      </ViroNode>
     )
   }
 
@@ -142,6 +158,10 @@ ViroARTrackingTargets.createTargets({
     orientation : "Up",
     physicalWidth : 0.05 // real world width in meters
   },
+  "peanutbutter": {
+    source: require('./res/peanutbutter.arobject'),
+    type : 'Object'
+  }
 });
 
 ViroMaterials.createMaterials({
@@ -150,7 +170,10 @@ ViroMaterials.createMaterials({
   },
   quad: {
     diffuseColor: "rgba(0,0,0,0.5)"
-  }
+  },
+  box: {
+    diffuseColor: "rgba(212,201,100,1)"
+  },
 });
 
 ViroAnimations.registerAnimations({

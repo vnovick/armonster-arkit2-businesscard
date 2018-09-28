@@ -21,7 +21,7 @@ export default class ViroSample extends Component {
     return (
       <ViroARSceneNavigator 
         apiKey="1839C275-6929-45AF-B638-EF2DEE44C1D9"
-        numberOfTrackedImages={1}
+        numberOfTrackedImages={2}
         initialScene={{scene: BusinessCard}} 
       />
     )
