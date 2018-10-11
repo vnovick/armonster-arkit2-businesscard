@@ -48,28 +48,28 @@ export class HelloWorldSceneAR extends Component {
   getARScene() {
     return (
       <ViroNode>
-        <ViroDirectionalLight color="#FFF"
-          direction={[0, -1, 0]}
-          shadowOrthographicPosition={[0, 8, -5]}
-          shadowOrthographicSize={10}
-          shadowNearZ={2}
-          shadowFarZ={9}
-          lightInfluenceBitMask={2}
-          castsShadow={true} 
-        />
-        <ViroARImageMarker target={"businessCard"} onAnchorFound={() => this.setState({
+        <ViroARImageMarker target={"businessCard"} 
+          onAnchorFound={
+            () => this.setState({
                 runAnimation: true
-              })}>
+            })}
+        >
           <ViroNode key="card">
-            <ViroNode opacity={0} position={[0, -0.02, 0]} animation={{name:'animateImage', run: this.state.runAnimation }}>
+            <ViroNode 
+              opacity={0} position={[0, -0.02, 0]} 
+              animation={{
+                name:'animateImage', 
+                run: this.state.runAnimation 
+                }}
+            >
               <ViroFlexView 
                   rotation={[-90, 0, 0]}
                   height={0.03} 
                   width={0.05}
-                  style={{flexDirection: 'column' }} 
+                  style={styles.card} 
               >
                 <ViroFlexView 
-                  style={{flexDirection: 'row', alignItems: 'flex-start', padding: 0.001, flex: .5}} 
+                  style={styles.cardWrapper} 
                 >
                   <ViroImage
                     height={0.015}
@@ -86,7 +86,7 @@ export class HelloWorldSceneAR extends Component {
                 </ViroFlexView>
                 <ViroFlexView 
                   onTouch={() => alert("twitter")}
-                  style={{flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', flex: .5}} 
+                  style={styles.subText} 
                 >
                   <ViroText 
                     width={0.01}
@@ -101,13 +101,17 @@ export class HelloWorldSceneAR extends Component {
                     height={0.01}
                     width={0.01}
                     loop={true}
-                    placeholderSource={require("./res/local_spinner.jpg")}
                     source={require('./res/tweet.gif')}
                   />
                 </ViroFlexView>
               </ViroFlexView>
             </ViroNode>  
-            <ViroNode opacity={0} position={[0, 0, 0]} animation={{name:'animateViro', run: this.state.runAnimation }}>
+            <ViroNode opacity={0} position={[0, 0, 0]} 
+              animation={{
+                name:'animateViro', 
+                run: this.state.runAnimation 
+              }}
+            >
               <ViroText text="www.viromedia.com"
                 rotation={[-90, 0, 0]}
                 scale={[.01, .01, .01]}
@@ -116,9 +120,6 @@ export class HelloWorldSceneAR extends Component {
             </ViroNode>
           </ViroNode>
         </ViroARImageMarker>
-        <ViroARObjectMarker target={"peanutbutter"} onAnchorFound={() => alert("Found anchor")}>
-          <ViroBox scale={[0.1,0.1, 0.1]} materials={["box"]} />
-        </ViroARObjectMarker>
       </ViroNode>
     )
   }
@@ -126,7 +127,7 @@ export class HelloWorldSceneAR extends Component {
   render() {
     return (
       <ViroARScene onTrackingUpdated={this._onInitialized} >
-        { this.state.isTracking && this.getNoTrackingUI() || this.getARScene() }
+        { this.state.isTracking ? this.getNoTrackingUI() : this.getARScene() }
       </ViroARScene>
     );
   }
@@ -149,18 +150,29 @@ var styles = StyleSheet.create({
     textAlignVertical: 'top',
     textAlign: 'left',
     fontWeight: 'bold',
+  },
+  card: {
+    flexDirection: 'column' 
+  },
+  cardWrapper: {
+    flexDirection: 'row', 
+    alignItems: 'flex-start', 
+    padding: 0.001, 
+    flex: .5
+  },
+  subText: {
+    flexDirection: 'column', 
+    alignItems: 'flex-start', 
+    justifyContent: 'flex-start', 
+    flex: .5
   }
 });
 
 ViroARTrackingTargets.createTargets({
   "businessCard" : {
-    source : require('./res/Logo.png'),
+    source : require('./res/business_card.png'),
     orientation : "Up",
     physicalWidth : 0.05 // real world width in meters
-  },
-  "peanutbutter": {
-    source: require('./res/peanutbutter.arobject'),
-    type : 'Object'
   }
 });
 
@@ -170,10 +182,7 @@ ViroMaterials.createMaterials({
   },
   quad: {
     diffuseColor: "rgba(0,0,0,0.5)"
-  },
-  box: {
-    diffuseColor: "rgba(212,201,100,1)"
-  },
+  }
 });
 
 ViroAnimations.registerAnimations({

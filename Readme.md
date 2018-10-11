@@ -1,29 +1,21 @@
-# ViroMedia AR Monster demo on business card
-
 ##  Sample for ARKit 2 continuos image tracking behavior
 
-
+![business_card](./business_card.gif)
 
 - Clone the repo
 
-- Go to this link and install Xcode 10 Beta: <https://developer.apple.com/xcode/downloads/>
-
-- Install iOS 12 on your device
-
-- Install react viro **2.9.0**
-
-  - Download zipped version to app directory:
-
-    | Version          | Date     | Link                                                         |
-    | :--------------- | -------- | ------------------------------------------------------------ |
-    | react-viro 2.9.0 | 08/14/18 | <https://s3-us-west-2.amazonaws.com/viro/ViroBeta/react-viro-2.9.0.tgz> |
-
-  - `npm install ./react-viro-2.9.0.tgz`
-
 - `yarn` or `npm install`
 
-- ```bash
-  yarn
+- npm start
+
+- open ViroMedia [testbed app](https://docs.viromedia.com/docs/develop-with-viro)
+and run project from it.
+
+
+## Developing with XCode
+
+
+  ```bash
   cd ios
   pod install
   ```
@@ -46,14 +38,11 @@
 
   * Print the following image:
 
-  * ![Kiku](js/res/Logo.png)
+  * ![business-card](js/res/business_card.png)
 
-    If you are not able to print it in color, change the marker image to black and white in `js/res/Logo.png`
+    If you are not able to print it in color, change the marker image to black and white in `js/res/businss_card.png`
 
-
-
-    Point app to business card and get a monster standing on it
-
+    Point app to business card and get additional AR Content.
 
 
 #### Troubleshooting
